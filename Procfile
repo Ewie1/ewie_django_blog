@@ -1,1 +1,1 @@
-wed: gunicorn codestar2023.wsgi
+wed: gunicorn ewie-codestar-2023.wsgi
