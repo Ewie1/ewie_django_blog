@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load bootstrap_tags %}
+<div class="">
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-sm-12">
+            <h1 class="text-center mt-3" style="color: rgb(27, 121, 32);"> <em>  {{ post.title }}</em></h1>
+        </div>
+    </div>
+</div>
+
+<!---Post-->
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-8 mx-auto mt-5 rounded p-3" style="background: rgba(240, 240, 240, 0.888);">
+            {% if "placeholder" in post.featured_image.url %}
+            <img src="" width="100% " >
+            {% else %}
+            <img src="{{ post.featured_image.url }}" width="100%" height="70%">
+            {% endif %}
+            <div class="bg-white p-3 form-outline mt-3">
+            {{ post.content| safe }}
+            {{ post.image.url }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--comment-->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12  blog-hr rounded-3">
+           <!--- <h3>Comments:</h3>-->
+            {% for comment in comments %}
+            <div class="col-sm-12 mt-3 ">
+                <p > <b> <span style="color: rgb(56, 142, 60);"> {{ comment.name }} </span></b> says:</p>
+                <p> <em> {{ comment.created_on }}</em> </p>
+                <p class="text-muted"> {{ comment.body }} </p>
+                <br>
+            </div>
+            {% endfor %}
+            <hr>
+        </div>
+    </div>
+</div>
+
+<!--Add comments-->
+<div class="container comment-form-margin">
+    <div class="row justify-content-center">
+        <div class="col-sm-6 col-md">
+            <div class="card-body text-center">
+                {% if commented %}
+                <div class="alert alert-success" role="alert">
+                    Your comment is awaiting approval
+                </div>
+                {% else %}
+                {% if user.is_authenticated %}
+
+                <h3>Leave a comment:</h3>
+                <p>What's your thoughts: <span style="color: rgb(56, 142, 60);"> <b> {{ user.username }}</b></span> </p>
+                <form method="post" style="margin-top: 1.3em;">
+                    {{ comment_form | as_bootstrap }}
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-signup btn-lg">Submit</button>
+                </form>
+                {% endif %}
+                {% endif %}
+        </div>
+    </div>
+</div>
+</div>
+</div>
+{% endblock %}

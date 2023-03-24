@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div  class="bg-dark">
+<div class="container-fluid">
+    <div class="row">
+
+        <!-- Blog Entries Column -->
+        <div class="col-12 mt-5">
+            <div class="row justify-content-center">
+                {% for post in post_listing %}
+                {% if post.status %}
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body text-center" style="background: rgba(240, 240, 240, 0.888);">
+                            <div class="image-container">
+                                {% if "placeholder" in post.featured_image.url %}
+                                <img class="card-img-top"
+                                    src="">
+                                {% else %}
+                                <a href="{% url 'read_post' post.slug %}"><img class="card-img-top" src=" {{ post.featured_image.url }}"></a>
+                                {% endif %}
+                                <div class="blog-title">
+                                    <a href="{% url 'read_post' post.slug %}" class="post-link">
+                                        <h2 class="card-title">{{ post.title }}</h2>
+                                        <p class="card-text">{{ post.excerpt }}</p>
+                                    </a>
+                                </div>
+                            </div>
+                            <p class="text-muted">Add by: {{ post.author }}</p>
+                            <hr />
+                            <p class="text-muted">Created on: {{ post.created_on}} </p>
+                        </div>
+                    </div>
+                </div>
+                
+                {% endif %}
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            {% if post_listing.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ post_listing.previous_page_number }}">&laquo;</a>
+            </li>
+            {% endif %}
+            <li class="page-link pagination-arrow">
+                Page {{ post_listing.number }} of {{ post_listing.paginator.num_pages }}
+            </li>
+            {% if post_listing.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ post_listing.next_page_number }}">&raquo;</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ post_listing.paginator.num_pages}}">Last</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+</div>
+{%endblock%}
